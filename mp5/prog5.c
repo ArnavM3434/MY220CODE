@@ -63,7 +63,16 @@ set_seed (const char seed_str[])
 //    Feel free to uncomment these statements, modify them, or delete these comments as necessary. 
 //    You may need to change the return statement below
    
-    return 0;
+    int seed = 0;
+    char post[2];
+    int check = sscanf(seed_str, "%d%1s",&seed, post);
+    if(check != 1)
+    {
+        printf("set_seed: invalid seed\n");
+        return 0;
+    }
+    srand(seed);
+    return 1;
 }
 
 
@@ -86,6 +95,22 @@ void
 start_game (int* one, int* two, int* three, int* four)
 {
     //your code here
+    solution1 = rand();
+    solution1 = solution1 % 8 + 1;
+    solution2 = rand();
+    solution2 = solution2 % 8 + 1;
+    solution3 = rand();
+    solution3 = solution3 % 8 + 1;
+    solution4 = rand();
+    solution4 = solution4 % 8 + 1;
+    
+
+    *one = solution1;
+    *two = solution2;
+    *three = solution3;
+    *four = solution4;
+
+    guess_number = 1;
     
 }
 
@@ -126,7 +151,226 @@ make_guess (const char guess_str[], int* one, int* two,
 //  You should then check if the 4 integers are between 1-8. If so, it is a valid guess
 //  Otherwise, it is invalid.  
 //  Feel free to use this sscanf statement, delete these comments, and modify the return statement as needed
-    return 1;
+    int first;
+    int second;
+    int third; 
+    int fourth;
+    char post[2];
+    int check = sscanf(guess_str, "%d%d%d%d%1s", &first, &second, &third, &fourth, post);
+    if(check != 4)
+    {
+        printf("make_guess: invalid guess\n");
+        return 0;
+    }
+
+
+    if(first < 1 || first > 8)
+    {
+        printf("make_guess: invalid guess\n");
+        return 0;
+    }
+    if(second < 1 || second > 8)
+    {
+        printf("make_guess: invalid guess\n");
+        return 0;
+    }
+    if(third < 1 || third > 8)
+    {
+        printf("make_guess: invalid guess\n");
+        return 0;
+    }
+    if(fourth < 1 || fourth > 8)
+    {
+        printf("make_guess: invalid guess\n");
+        return 0;
+    }
+
+    
+    *one = first;
+    *two = second;
+    *three = third;
+    *four = fourth;
+
+
+    //int guess1p = 0;
+    //int guess2p = 0;
+    //int guess3p = 0;
+    //int guess4p = 0;
+
+    int sol1p = 0;
+    int sol2p = 0;
+    int sol3p = 0;
+    int sol4p = 0;
+
+    int firstp = 0;
+    int secondp = 0;
+    int thirdp = 0;
+    int fourthp = 0;
+
+    int perfect = 0;
+    int misplaced = 0;
+
+
+
+    //checking perfect matches first
+    if (first == solution1 && sol1p == 0)
+        {
+            perfect = perfect + 1;
+            sol1p = 1;
+            firstp = 1;
+
+        }
+
+    if (second == solution2 && sol2p == 0)
+        {
+            perfect = perfect + 1;
+            sol2p = 1;
+            secondp = 1;
+        }
+
+    if (third == solution3 && sol3p == 0)
+    {
+        perfect = perfect + 1;
+        sol3p = 1;
+        thirdp = 1;
+
+    }
+
+
+    if (fourth == solution4 && sol4p == 0)
+    {
+        perfect = perfect + 1;
+        sol4p = 1;
+        fourthp = 1;
+
+    }
+    
+
+
+
+
+    //checking guess 1
+
+    
+       
+        if (first == solution2 && sol2p == 0 && firstp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol2p = 1;
+            firstp = 1;
+
+        }
+        if (first == solution3 && sol3p == 0 && firstp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol3p = 1;
+            firstp = 1;
+            
+
+        }
+        if (first == solution4 && sol4p == 0 && firstp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol4p = 1;
+            firstp = 1;
+        }
+    
+    
+
+    //checking guess 2
+
+    
+     
+        if (second == solution1 && sol1p == 0 && secondp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol1p = 1;
+            secondp = 1;
+
+        }
+        if (second == solution3 && sol3p == 0 && secondp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol3p = 1;
+            secondp = 1;
+
+        }
+        if (second == solution4 && sol4p == 0 && secondp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol4p = 1;
+            secondp = 1;
+
+        }
+     
+    
+
+    //checking guess 3
+
+    
+        
+        if (third == solution1 && sol1p == 0 && thirdp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol1p = 1;
+            thirdp = 1;
+
+        }
+        if (third == solution2 && sol2p == 0 && thirdp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol2p = 1;
+            thirdp = 1;
+
+        }
+        
+        if (third == solution4 && sol4p == 0 && thirdp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol4p = 1;
+            thirdp = 1;
+            
+
+        }
+    
+
+    //checking guess 4
+
+    
+        
+        if (fourth == solution1 && sol1p == 0 && fourthp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol1p = 1;
+            fourthp = 1;
+
+        }
+        if (fourth == solution2 && sol2p == 0 && fourthp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol2p = 1;
+            fourthp = 1;
+            
+
+        }
+        if (fourth == solution3 && sol3p == 0 && fourthp == 0)
+        {
+            misplaced = misplaced + 1;
+            sol3p = 1;
+            fourthp = 1;
+
+        }
+        
+        printf("With guess %d, you got %d perfect matches and %d misplaced matches.\n",guess_number,perfect,misplaced);
+
+    
+
+
+
+
+
+   guess_number = guess_number + 1; 
+   return 1;
 }
 
 
