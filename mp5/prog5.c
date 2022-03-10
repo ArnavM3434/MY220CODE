@@ -1,4 +1,4 @@
-/*			
+*			
  *
  * prog5.c - source file adapted from UIUC ECE198KL Spring 2013 Program 4
  *           student code -- GOLD VERSION by Steven S. Lumetta
