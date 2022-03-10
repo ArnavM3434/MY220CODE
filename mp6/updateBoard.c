@@ -1,4 +1,4 @@
-/*
+/*partners: vaa3, davidy5
 * This program is used to implement the functions in the main program, which simulates Game of Life, which takes a 2 dimensional game
 * board with 1's or 0's in each cell. The game then keeps updating the board based on a set of rules, which these functions help implement.
 * The first function in this program is countLiveNeighbor, which takes in the address of the first element in the board array, the size of the rows
@@ -11,7 +11,7 @@
 * onto the original array. The final function, aliveStable, once again copies the original board. Then, it calls the updateBoard function to 
 * update the copied version. Then the updated copied array is compared elementwise to the original array; if they differ, a 0 is returned. Otherwise,
 * the board is stable and a 1 is returned.
-* partners: vaa3@illinois.edu
+* partners: vaa3, davidy5
 
 
  * countLiveNeighbor
