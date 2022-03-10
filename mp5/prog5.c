@@ -1,4 +1,17 @@
+<<<<<<< HEAD
 *			
+=======
+/* This program defines all the functions that are used in main.c to implement the Mastermind / Codebreaker program. It consists of
+* the first method, set_seed, whose purpose is to generate a seed from the user for pseudo random number generation purposes. This method
+* takes in a string that the user entered, and uses the sscanf to obtain the number from the string and ensure its validity. If the string
+* is valid the srand() is called for pseudo-random number generation later on. If the string is valid a 1 is returned - otherwise a 0 is returned.
+* The method start_game is a void method that takes in memory addresses of the solution variables in main.c. This function uses rand()
+* and modulo operators to come up with 4 random numbers (the secret) - these numbers are assigned to variables back in the main program
+* and to static variables in this program. Finally, make_guess ensures valid user guesses using sscanf and a similar method described above.
+* It returns a 1 or 0 and prints a message based on whether or not the input is valid. If the guess is valid, the static variable guess_number
+* is incremented. This function also tells how many of the guesses are completely correct and how many are misplaced, through a series
+* of if statements and variables that keep track of whether each guess and each answer have been paired.		
+>>>>>>> 6e06bf8afa9a418a8faf5fa315c0f955feca64bc
  *
  * prog5.c - source file adapted from UIUC ECE198KL Spring 2013 Program 4
  *           student code -- GOLD VERSION by Steven S. Lumetta
@@ -24,11 +37,11 @@
  * variables as well as the guess number.
  */
 
-static int guess_number;
-static int solution1;
-static int solution2;
-static int solution3;
-static int solution4;
+static int guess_number; //how many guesses user has input
+static int solution1; //first secret number
+static int solution2; //second secret number
+static int solution3; //third secret number
+static int solution4; //fourth secret number
 
 
 /*
@@ -63,16 +76,16 @@ set_seed (const char seed_str[])
 //    Feel free to uncomment these statements, modify them, or delete these comments as necessary. 
 //    You may need to change the return statement below
    
-    int seed = 0;
-    char post[2];
-    int check = sscanf(seed_str, "%d%1s",&seed, post);
-    if(check != 1)
+    int seed = 0; //initialize seed
+    char post[2]; //initialize string to detect garbage
+    int check = sscanf(seed_str, "%d%1s",&seed, post); //modify seed based on integer input, assign sscanf value to check
+    if(check != 1) //if nothing, or more than one thing was read
     {
-        printf("set_seed: invalid seed\n");
+        printf("set_seed: invalid seed\n"); //input is invalid, return 0
         return 0;
     }
-    srand(seed);
-    return 1;
+    srand(seed); //start process of pseduo random number generation
+    return 1; //return 1, valid input
 }
 
 
@@ -95,22 +108,22 @@ void
 start_game (int* one, int* two, int* three, int* four)
 {
     //your code here
-    solution1 = rand();
-    solution1 = solution1 % 8 + 1;
-    solution2 = rand();
-    solution2 = solution2 % 8 + 1;
-    solution3 = rand();
-    solution3 = solution3 % 8 + 1;
-    solution4 = rand();
-    solution4 = solution4 % 8 + 1;
+    solution1 = rand(); //create a random number based on key
+    solution1 = solution1 % 8 + 1; //Have the number be between 1 and 8
+    solution2 = rand(); //create a random number based on key
+    solution2 = solution2 % 8 + 1; //Have the number be between 1 and 8
+    solution3 = rand(); //create a random number based on key
+    solution3 = solution3 % 8 + 1; //Have the number be between 1 and 8
+    solution4 = rand(); //create a random number based on key
+    solution4 = solution4 % 8 + 1; //Have the number be between 1 and 8
     
 
-    *one = solution1;
+    *one = solution1; //modify variables in main program so that the main program also has the solution
     *two = solution2;
     *three = solution3;
     *four = solution4;
 
-    guess_number = 1;
+    guess_number = 1; //After this point, it will be the user's first guess
     
 }
 
@@ -151,97 +164,94 @@ make_guess (const char guess_str[], int* one, int* two,
 //  You should then check if the 4 integers are between 1-8. If so, it is a valid guess
 //  Otherwise, it is invalid.  
 //  Feel free to use this sscanf statement, delete these comments, and modify the return statement as needed
-    int first;
-    int second;
-    int third; 
-    int fourth;
-    char post[2];
-    int check = sscanf(guess_str, "%d%d%d%d%1s", &first, &second, &third, &fourth, post);
-    if(check != 4)
+
+    int first; //variable to hold first guess
+    int second; //second guess
+    int third; //third guess
+    int fourth; //fourth guess
+    char post[2]; //string to detect garbage
+    int check = sscanf(guess_str, "%d%d%d%d%1s", &first, &second, &third, &fourth, post); //obtain integers, assign sscanf value to check
+    if(check != 4) //if less than 4 integers were assigned or some garbage appeared
     {
-        printf("make_guess: invalid guess\n");
+        printf("make_guess: invalid guess\n"); //invalid guess, return 0
         return 0;
     }
 
 
-    if(first < 1 || first > 8)
+    if(first < 1 || first > 8) //if integers are not in the correct range, invalid guess, return 0
     {
         printf("make_guess: invalid guess\n");
         return 0;
     }
-    if(second < 1 || second > 8)
+    if(second < 1 || second > 8) //if integers are not in the correct range, invalid guess, return 0
     {
         printf("make_guess: invalid guess\n");
         return 0;
     }
-    if(third < 1 || third > 8)
+    if(third < 1 || third > 8) //if integers are not in the correct range, invalid guess, return 0
     {
         printf("make_guess: invalid guess\n");
         return 0;
     }
-    if(fourth < 1 || fourth > 8)
+    if(fourth < 1 || fourth > 8) //if integers are not in the correct range, invalid guess, return 0
     {
         printf("make_guess: invalid guess\n");
         return 0;
     }
 
     
-    *one = first;
+    *one = first; //want to modify variables in the main program so that it can also keep track of user guesses
     *two = second;
     *three = third;
     *four = fourth;
 
 
-    //int guess1p = 0;
-    //int guess2p = 0;
-    //int guess3p = 0;
-    //int guess4p = 0;
-
-    int sol1p = 0;
+    
+    int sol1p = 0; //keeps track of whether a solution number was paired or not - don't want it to be reused
     int sol2p = 0;
     int sol3p = 0;
     int sol4p = 0;
 
-    int firstp = 0;
+    int firstp = 0; //keeps track of whether a guess number was paired or not - don't want it to be reused
     int secondp = 0;
     int thirdp = 0;
     int fourthp = 0;
 
-    int perfect = 0;
-    int misplaced = 0;
+    int perfect = 0; //counter for number of perfect matches
+    int misplaced = 0; //counter for number of misplaced matches
 
 
 
     //checking perfect matches first
     if (first == solution1 && sol1p == 0)
-        {
-            perfect = perfect + 1;
-            sol1p = 1;
-            firstp = 1;
+    {
+        perfect = perfect + 1; //increment perfect
+        sol1p = 1; //now solution is paired
+        firstp = 1; //now guess is paired
 
-        }
+     }
 
     if (second == solution2 && sol2p == 0)
-        {
-            perfect = perfect + 1;
-            sol2p = 1;
-            secondp = 1;
-        }
+    {
+        perfect = perfect + 1; //increment perfect
+        sol2p = 1; //now solution is paired
+        secondp = 1; //now guess is paired
+    }
 
     if (third == solution3 && sol3p == 0)
     {
-        perfect = perfect + 1;
-        sol3p = 1;
-        thirdp = 1;
+        perfect = perfect + 1; //increment perfect
+        sol3p = 1; //now solution is paired
+        thirdp = 1; //now guess is paired
 
     }
 
 
     if (fourth == solution4 && sol4p == 0)
     {
-        perfect = perfect + 1;
-        sol4p = 1;
-        fourthp = 1;
+        perfect = perfect + 1; //increment perfect
+        sol4p = 1; //now solution is paired
+        fourthp = 1; //now guess is paired
 
     }
     
@@ -249,128 +259,129 @@ make_guess (const char guess_str[], int* one, int* two,
 
 
 
-    //checking guess 1
+    //checking guess 1 for mismatch
 
     
        
-        if (first == solution2 && sol2p == 0 && firstp == 0)
+        if (first == solution2 && sol2p == 0 && firstp == 0) //first guess and solution number cannot be paired
         {
-            misplaced = misplaced + 1;
-            sol2p = 1;
-            firstp = 1;
+            misplaced = misplaced + 1; //increment misplaced counter
+            sol2p = 1; //solution is paired
+            firstp = 1; //guess is paired
 
         }
         if (first == solution3 && sol3p == 0 && firstp == 0)
         {
-            misplaced = misplaced + 1;
-            sol3p = 1;
-            firstp = 1;
+            misplaced = misplaced + 1; //increment misplaced counter
+            sol3p = 1; //solution is paired
+            firstp = 1; //guess is paired
             
 
         }
         if (first == solution4 && sol4p == 0 && firstp == 0)
         {
-            misplaced = misplaced + 1;
-            sol4p = 1;
-            firstp = 1;
+            misplaced = misplaced + 1; //increment misplaced counter
+            sol4p = 1; //solution is paired
+            firstp = 1; //guess is paired
         }
     
     
 
-    //checking guess 2
+    //checking guess 2 for mismatch
 
     
      
-        if (second == solution1 && sol1p == 0 && secondp == 0)
+        if (second == solution1 && sol1p == 0 && secondp == 0) //second guess and solution number can't be paired
         {
-            misplaced = misplaced + 1;
-            sol1p = 1;
-            secondp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol1p = 1; //solution is paired
+            secondp = 1; //guess is paired
 
         }
         if (second == solution3 && sol3p == 0 && secondp == 0)
         {
-            misplaced = misplaced + 1;
-            sol3p = 1;
-            secondp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol3p = 1; //solution is paired
+            secondp = 1; //guess is paired
 
         }
         if (second == solution4 && sol4p == 0 && secondp == 0)
         {
-            misplaced = misplaced + 1;
-            sol4p = 1;
-            secondp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol4p = 1; //solution is paired
+            secondp = 1; //guess is paired
 
         }
      
     
 
-    //checking guess 3
+    //checking guess 3 for mismatch
 
     
         
-        if (third == solution1 && sol1p == 0 && thirdp == 0)
+        if (third == solution1 && sol1p == 0 && thirdp == 0) //third guess and solution can't be paired
         {
-            misplaced = misplaced + 1;
-            sol1p = 1;
-            thirdp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol1p = 1; //solution is paired
+            thirdp = 1; //guess is paired
 
         }
         if (third == solution2 && sol2p == 0 && thirdp == 0)
         {
-            misplaced = misplaced + 1;
-            sol2p = 1;
-            thirdp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol2p = 1; //solution is paired
+            thirdp = 1; //guess is paired
 
         }
         
         if (third == solution4 && sol4p == 0 && thirdp == 0)
         {
-            misplaced = misplaced + 1;
-            sol4p = 1;
-            thirdp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol4p = 1; //solution is paired
+            thirdp = 1; //guess is paired
             
 
         }
     
 
-    //checking guess 4
+    //checking guess 4 for mismatch
 
     
         
-        if (fourth == solution1 && sol1p == 0 && fourthp == 0)
+        if (fourth == solution1 && sol1p == 0 && fourthp == 0) //fourth guess and solution can't be paired
         {
-            misplaced = misplaced + 1;
-            sol1p = 1;
-            fourthp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol1p = 1; //solution is paired
+            fourthp = 1; //guess is paired
 
         }
         if (fourth == solution2 && sol2p == 0 && fourthp == 0)
         {
-            misplaced = misplaced + 1;
-            sol2p = 1;
-            fourthp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol2p = 1; //solution is paired
+            fourthp = 1; //guess is paired
             
 
         }
         if (fourth == solution3 && sol3p == 0 && fourthp == 0)
         {
-            misplaced = misplaced + 1;
-            sol3p = 1;
-            fourthp = 1;
+            misplaced = misplaced + 1; //increment mismatch counter
+            sol3p = 1; //solution is paired
+            fourthp = 1; //guess is paired
 
         }
         
+        //print how many mismatches and perfect matches there were
         printf("With guess %d, you got %d perfect matches and %d misplaced matches.\n",guess_number,perfect,misplaced);
-
+        
     
 
 
 
 
 
-   guess_number = guess_number + 1; 
-   return 1;
+   guess_number = guess_number + 1;  //increment guess_number
+   return 1; //return 1 for valid input
 }
 
 

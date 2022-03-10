@@ -1,0 +1,13 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	OUTERLOOP         3002
+//	INNERLOOP         3007
+//	IFNONNEGATIVE     300C
+//	NOMATTERWHAT      300D
+//	GREATERTHAN       3017
+//	ALWAYS            301B
+//	LETTERCODE        301F
+//	NUMBERCODE        3020
+
