@@ -14,6 +14,19 @@ game * make_game(int rows, int cols)
     mygame->cells = malloc(rows*cols*sizeof(cell));
 
     //YOUR CODE STARTS HERE:  Initialize all other variables in game struct
+    
+    mygame->rows = rows;
+    mygame->cols = cols;
+    mygame->score = 0;
+
+    for(int i = 0; i < rows * cols; i++)
+    {
+        mygame->cells[i] = -1;
+    }
+
+
+
+    
 
 
     return mygame;
@@ -32,6 +45,14 @@ void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
 	(*_cur_game_ptr)->cells = malloc(new_rows*new_cols*sizeof(cell));
 
 	 //YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
+     (*_cur_game_ptr)->rows = new_rows;
+     (*_cur_game_ptr)->cols = new_cols;
+     (*_cur_game_ptr)->score = -1;
+
+     for(int i = 0; i < new_rows * new_cols; i++)
+     {
+         (*_cur_game_ptr)->cells[i] = -1;
+     }
 
 	return;	
 }
@@ -54,8 +75,11 @@ cell * get_cell(game * cur_game, int row, int col)
 */
 {
     //YOUR CODE STARTS HERE
-
+    if ( (row < 0 || row >= cur_game->rows) || (col < 0 || col >= cur_game->cols) )
     return NULL;
+
+     return &(cur_game->cells[row * cur_game->cols + col]);
+    
 }
 
 int move_w(game * cur_game)
@@ -67,28 +91,420 @@ int move_w(game * cur_game)
 */
 {
     //YOUR CODE STARTS HERE
+    
+    //convert to 2D array
+    int numrows = cur_game -> rows;
+    int numcols = cur_game -> cols;
+    int board[numrows][numcols];
+    int i;
+    int j;
+    
 
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            board[i][j] = cur_game -> cells[i * numcols + j];
+        }
+    }
+
+    //perform the slide
+    int targetrow;
+    int merged  = 0;
+    int somethingchanged = 0;
+
+    for(j = 0; j < numcols; j++)
+    {
+
+        for(i = 0; i < numrows; i++)
+        {
+            targetrow = 0;
+            
+            if (board[i][j] == -1)
+            continue;
+            
+            while(board[targetrow][j] != -1 && targetrow < numrows - 1)
+            targetrow++;
+
+            if(targetrow < i)
+            {
+                
+                board[targetrow][j] = board[i][j];
+                board[i][j] = -1;
+                somethingchanged++;
+                
+            }
+            
+            //check to see if cells should be merged
+            if(targetrow < i)
+            {
+
+            if(targetrow > 0 && board[targetrow][j] == board[targetrow - 1][j] && merged == 0)
+            {
+                board[targetrow - 1][j] = 2 * board[targetrow][j];
+                board[targetrow][j] = -1;
+                merged = 1;
+                somethingchanged++;
+            }
+            else //now in next iteration merging is allowed
+            {
+                merged = 0;
+
+            }
+            continue;
+            }
+
+            if(targetrow >= i) //cell hasn't moved
+            {
+                if(i > 0 && board[i][j] == board[i-1][j] && merged == 0)
+                {
+                    board[i - 1][j] = 2 * board[i][j];
+                board[i][j] = -1;
+                merged = 1;
+                somethingchanged++; 
+
+                }
+                else
+                {
+                    merged = 0;
+                }
+            }
+
+            
+
+
+        }
+    }
+
+
+    //transfer 2D array values back into 1D array cells
+
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            cur_game -> cells[numcols * i + j] = board[i][j];
+        }
+    }
+
+    if(somethingchanged)
     return 1;
+
+    return 0;
 };
 
 int move_s(game * cur_game) //slide down
 {
     //YOUR CODE STARTS HERE
+    int numrows = cur_game -> rows;
+    int numcols = cur_game -> cols;
+    int board[numrows][numcols];
+    int i;
+    int j;
+    
 
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            board[i][j] = cur_game -> cells[i * numcols + j];
+        }
+    }
+
+    //perform the slide
+    int targetrow;
+    int merged  = 0;
+    int somethingchanged = 0;
+
+    for(j = 0; j < numcols; j++)
+    {
+
+        for(i = numrows - 1; i >= 0; i--)
+        {
+            targetrow = numrows - 1;
+            
+            if (board[i][j] == -1)
+            continue;
+            
+            while(board[targetrow][j] != -1 && targetrow > 0)
+            targetrow--;
+
+            if(targetrow > i)
+            {
+                
+                board[targetrow][j] = board[i][j];
+                board[i][j] = -1;
+                somethingchanged++;
+                
+            }
+            
+            //check to see if cells should be merged
+            if(targetrow > i) //cell has moved and want to check if it should be merged
+            {
+
+            if(targetrow < numrows - 1 && board[targetrow][j] == board[targetrow + 1][j] && merged == 0)
+            {
+                board[targetrow + 1][j] = 2 * board[targetrow][j];
+                board[targetrow][j] = -1;
+                merged = 1;
+                somethingchanged++;
+            }
+            else //now in next iteration merging is allowed
+            {
+                merged = 0;
+
+            }
+            continue;
+            }
+
+            if(targetrow <= i) //cell hasn't moved
+            {
+                if(i < numrows - 1 && board[i][j] == board[i+1][j] && merged == 0)
+                {
+                    board[i + 1][j] = 2 * board[i][j];
+                board[i][j] = -1;
+                merged = 1;
+                somethingchanged++; 
+
+                }
+                else
+                {
+                    merged = 0;
+                }
+            }
+
+            
+
+
+        }
+    }
+
+
+    //transfer 2D array values back into 1D array cells
+
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            cur_game -> cells[numcols * i + j] = board[i][j];
+        }
+    }
+
+    if(somethingchanged)
     return 1;
+
+    return 0;
+
+    
 };
 
 int move_a(game * cur_game) //slide left
 {
     //YOUR CODE STARTS HERE
+    int numrows = cur_game -> rows;
+    int numcols = cur_game -> cols;
+    int board[numrows][numcols];
+    int i;
+    int j;
+    
 
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            board[i][j] = cur_game -> cells[i * numcols + j];
+        }
+    }
+
+    //perform the slide
+    int targetcol;
+    int merged  = 0;
+    int somethingchanged = 0;
+
+    for(i = 0; i < numrows; i++)
+    {
+
+        for(j = 0; j < numcols; j++)
+        {
+            targetcol = 0;
+            
+            if (board[i][j] == -1)
+            continue;
+            
+            while(board[i][targetcol] != -1 && targetcol < numcols - 1)
+            targetcol++;
+
+            if(targetcol < j)
+            {
+                
+                board[i][targetcol] = board[i][j];
+                board[i][j] = -1;
+                somethingchanged++;
+                
+            }
+            
+            //check to see if cells should be merged
+            if(targetcol < j) //cell has moved and want to check if it should be merged
+            {
+
+            if(targetcol > 0 && board[i][targetcol] == board[i][targetcol - 1] && merged == 0)
+            {
+                board[i][targetcol - 1] = 2 * board[i][targetcol];
+                board[i][targetcol] = -1;
+                merged = 1;
+                somethingchanged++;
+            }
+            else //now in next iteration merging is allowed
+            {
+                merged = 0;
+
+            }
+            continue;
+            }
+
+            if(targetcol >= j) //cell hasn't moved
+            {
+                if(j > 0 && board[i][j] == board[i][j - 1] && merged == 0)
+                {
+                    board[i][j - 1] = 2 * board[i][j];
+                board[i][j] = -1;
+                merged = 1;
+                somethingchanged++; 
+
+                }
+                else
+                {
+                    merged = 0;
+                }
+            }
+
+            
+
+
+        }
+    }
+
+
+    //transfer 2D array values back into 1D array cells
+
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            cur_game -> cells[numcols * i + j] = board[i][j];
+        }
+    }
+
+    if(somethingchanged)
     return 1;
+
+    return 0;
+
+    
 };
 
 int move_d(game * cur_game){ //slide to the right
     //YOUR CODE STARTS HERE
+    int numrows = cur_game -> rows;
+    int numcols = cur_game -> cols;
+    int board[numrows][numcols];
+    int i;
+    int j;
+    
 
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            board[i][j] = cur_game -> cells[i * numcols + j];
+        }
+    }
+
+    //perform the slide
+    int targetcol;
+    int merged  = 0;
+    int somethingchanged = 0;
+
+    for(i = 0; i < numrows; i++)
+    {
+
+        for(j = numcols - 1; j >= 0; j--)
+        {
+            targetcol = numcols - 1;
+            
+            if (board[i][j] == -1)
+            continue;
+            
+            while(board[i][targetcol] != -1 && targetcol > 0)
+            targetcol--;
+
+            if(targetcol > j)
+            {
+                
+                board[i][targetcol] = board[i][j];
+                board[i][j] = -1;
+                somethingchanged++;
+                
+            }
+            
+            //check to see if cells should be merged
+            if(targetcol > j) //cell has moved and want to check if it should be merged
+            {
+
+            if(targetcol < numcols - 1 && board[i][targetcol] == board[i][targetcol + 1] && merged == 0)
+            {
+                board[i][targetcol + 1] = 2 * board[i][targetcol];
+                board[i][targetcol] = -1;
+                merged = 1;
+                somethingchanged++;
+            }
+            else //now in next iteration merging is allowed
+            {
+                merged = 0;
+
+            }
+            continue;
+            }
+
+            if(targetcol <= j) //cell hasn't moved
+            {
+                if(j < numcols - 1 && board[i][j] == board[i][j + 1] && merged == 0)
+                {
+                    board[i][j + 1] = 2 * board[i][j];
+                board[i][j] = -1;
+                merged = 1;
+                somethingchanged++; 
+
+                }
+                else
+                {
+                    merged = 0;
+                }
+            }
+
+            
+
+
+        }
+    }
+
+
+    //transfer 2D array values back into 1D array cells
+
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            cur_game -> cells[numcols * i + j] = board[i][j];
+        }
+    }
+
+    if(somethingchanged)
     return 1;
+
+    return 0;
+
+    
 };
 
 int legal_move_check(game * cur_game)
@@ -98,8 +514,44 @@ int legal_move_check(game * cur_game)
  */
 {
     //YOUR CODE STARTS HERE
+    int numrows = cur_game -> rows;
+    int numcols = cur_game -> cols;
+    int board[numrows][numcols];
+    int i;
+    int j;
+    
 
-    return 1;
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            board[i][j] = cur_game -> cells[i * numcols + j];
+        }
+    }
+
+    for(i = 0; i < numrows; i++)
+    {
+        for(j = 0; j < numcols; j++)
+        {
+            if(board[i][j] == -1)
+            return 1;
+
+            if(j > 0 && board[i][j-1] == board[i][j])
+            return 1;
+
+            if(j < numcols - 1 && board[i][j+1] == board[i][j])
+            return 1;
+
+            if(i > 0 && board[i-1][j] == board[i][j])
+            return 1;
+
+            if(i < numrows - 1 && board[i + 1][j] == board[i][j])
+            return 1;
+
+        }
+    }
+
+    return 0;
 }
 
 
