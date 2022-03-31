@@ -69,7 +69,7 @@ void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
 	 //YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
      (*_cur_game_ptr)->rows = new_rows; //member rows gets new_rows
      (*_cur_game_ptr)->cols = new_cols; //member cols gets new_cols
-     (*_cur_game_ptr)->score = -1;    //score is initialized to -1 as per instructions
+     (*_cur_game_ptr)->score = 0;    //score is initialized to 0 as per instructions
 
      for(int i = 0; i < new_rows * new_cols; i++)
      {
