@@ -1,4 +1,7 @@
-/* This program helps with the implementation of the 2048 game. It consists of many different functions to accomplish this goal. The
+/* 
+partner: agrimk2
+
+This program helps with the implementation of the 2048 game. It consists of many different functions to accomplish this goal. The
 first function is make_game, which creates and initializes the game structure defined in the header file. It dynamically allocates memory
 for both the structure and the structure member cells(pointer to an array). The members rows and cols are assigned based on inputs to this function.
 Also, all elements in the member cells are intiliazed to -1; the function returns a pointer to this game structure. remake_game achieves
@@ -16,6 +19,8 @@ column. move_d has almost identical functionality to move_a, except that the tar
 conditional statements are reversed. legal_move_check checks to see if there any legal moves left - it converts the 1D array cells
 into a 2D array and checks to see if any cells are -1 or any cells have like neighbors. If so, a 1 is returned; otherwise a 0 is returned.
 This is accomplished using a double for loop.
+
+partner: agrimk2
 */
 
 
