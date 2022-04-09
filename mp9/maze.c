@@ -1,5 +1,6 @@
 
 /* 
+partner: vaa3
 This file implements the helper functions to solve a maze. The first function is createMaze, which takes in the name of a file
 with maze information and returns a pointer to the maze structure that memory is allocated for. fopen is used to make a stream for
 the file, and scanf is used to obtain the width and the height. Memory is allocated for the maze structure using malloc. Maze elements
@@ -16,6 +17,7 @@ maze structure and the current row and column as arguments. If the maze has a so
  gets a '*' (even the starting position, which gets reverted to 'S' later). The function is called recrusively on each of the current cell's
  neighbors, and if any of them return 1, then the function returns a 1. Otherwise, backtracking occurs where the current position 
  obtains a '~' for visited and a 0 is returned.
+ partner: vaa3
 */
 
 #include <stdio.h>
