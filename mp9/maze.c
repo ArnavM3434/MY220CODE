@@ -191,17 +191,30 @@ int solveMazeDFS(maze_t * maze, int col, int row)
     }
     if(maze->cells[row][col] != ' ' && maze->cells[row][col] != 'S') //if not an empty space nor the starting position
     return 0; //return false
+    if(!(row == startR && col == startC)) //don't want to change starting position
     maze->cells[row][col] = '*'; //otherwise set the curent cell to be part of the solution
     
-    if(solveMazeDFS(maze,col-1,row) == 1) //check for paths starting from the left neighbor
-    return 1; //return true
-    if(solveMazeDFS(maze,col+1,row) == 1) //check for paths starting from the right neighbor
-    return 1; //return true
-    if(solveMazeDFS(maze,col,row-1) == 1) //check for paths starting from the top neighbor
-    return 1; //return true
-    if(solveMazeDFS(maze,col,row+1) == 1) //check for paths starting from the bottom neighbor
-    return 1; //return true
-    
+    if(!(col - 1 == startC && row == startR)) //don't want to go back to starting position
+    {
+        if(solveMazeDFS(maze,col-1,row) == 1) //check for paths starting from the left neighbor
+        return 1; //return true
+    }
+    if(!(col + 1 == startC && row == startR)) //don't want to go back to starting position
+    {
+        if(solveMazeDFS(maze,col+1,row) == 1) //check for paths starting from the right neighbor
+        return 1; //return true
+    }
+    if(!(col == startC && row - 1 == startR)) //don't want to go back to starting position
+    {
+        if(solveMazeDFS(maze,col,row-1) == 1) //check for paths starting from the top neighbor
+        return 1; //return true
+    }
+    if(!(col == startC && row + 1 == startR)) //don't want to go back to starting position
+    {
+        if(solveMazeDFS(maze,col,row+1) == 1) //check for paths starting from the bottom neighbor
+        return 1; //return true
+    }
+    if(!(row == startR && col == startC)) //don't want to change starting position
     maze->cells[row][col] = '~'; //otherwise mark the cell as visited
     return 0; //return false for no solution
 
