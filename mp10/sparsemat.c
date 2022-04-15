@@ -1,6 +1,6 @@
 
 /* 
-partner: vaa3
+partners: vaa3, agrimk2
 This program helps implement the helper functions for creating a sparse matrix and manipulating it. The function
 load_tuples takes in a string (name of the input file), and creates a sparse matrix based on this. It allocates memory for a
 sp_tuples structure, and initializes its members by reading the file line by line. Each line, this function calls set_tuples
@@ -18,7 +18,7 @@ traverses the list using a double pointer, and if it finds the approriate node, 
 check_exist checks if the row and column values exist in the nodes of the list -  if they do this specific node is modified.
 addnew inserts a new node into the list by comparing the row and column of the node to the already existing nodes in the list.
 
-partner: vaa3
+partner: vaa3, agrimk2
 */
 
 #include "sparsemat.h"
